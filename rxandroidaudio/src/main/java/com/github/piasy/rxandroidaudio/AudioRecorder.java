@@ -24,12 +24,13 @@
 
 package com.github.piasy.rxandroidaudio;
 
-import android.annotation.TargetApi;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.support.annotation.IntDef;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Retention;
@@ -253,18 +254,18 @@ public final class AudioRecorder {
         return length;
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.N)
     @WorkerThread
-    public void pauseRecorder(){
+    public synchronized void pauseRecorder(){
         if (mRecorder != null && mState == STATE_RECORDING) {
             mRecorder.pause();
             mState = STATE_PAUSE;
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
+    @RequiresApi(Build.VERSION_CODES.N)
     @WorkerThread
-    public void resumeRecorder(){
+    public synchronized void resumeRecorder(){
         if (mRecorder != null && mState == STATE_PAUSE) {
             mRecorder.resume();
             mState = STATE_RECORDING;
