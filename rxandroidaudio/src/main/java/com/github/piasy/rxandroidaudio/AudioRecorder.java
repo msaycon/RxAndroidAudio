@@ -24,7 +24,9 @@
 
 package com.github.piasy.rxandroidaudio;
 
+import android.annotation.TargetApi;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -57,6 +59,7 @@ public final class AudioRecorder {
     private static final int STATE_IDLE = 0;
     private static final int STATE_PREPARED = 1;
     private static final int STATE_RECORDING = 2;
+    private static final int STATE_PAUSE = 3;
 
     private int mState = STATE_IDLE;
     private OnErrorListener mOnErrorListener;
@@ -248,6 +251,24 @@ public final class AudioRecorder {
         }
 
         return length;
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @WorkerThread
+    public void pauseRecorder(){
+        if (mRecorder != null && mState == STATE_RECORDING) {
+            mRecorder.pause();
+            mState = STATE_PAUSE;
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @WorkerThread
+    public void resumeRecorder(){
+        if (mRecorder != null && mState == STATE_PAUSE) {
+            mRecorder.resume();
+            mState = STATE_RECORDING;
+        }
     }
 
     private void setError(int error) {
