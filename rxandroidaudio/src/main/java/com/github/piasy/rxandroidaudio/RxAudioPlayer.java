@@ -28,10 +28,12 @@ import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 
 /**
  * Created by Piasy{github.com/Piasy} on 16/2/23.
@@ -126,11 +128,15 @@ public final class RxAudioPlayer {
     }
 
     public void pause() {
-        mPlayer.pause();
+        if (mPlayer != null) {
+            mPlayer.pause();
+        }
     }
 
     public void resume() {
-        mPlayer.start();
+        if (mPlayer != null) {
+            mPlayer.start();
+        }
     }
 
     /**
@@ -138,8 +144,8 @@ public final class RxAudioPlayer {
      */
     @WorkerThread
     public boolean playNonRxy(@NonNull final PlayConfig config,
-            final MediaPlayer.OnCompletionListener onCompletionListener,
-            final MediaPlayer.OnErrorListener onErrorListener) {
+                              final MediaPlayer.OnCompletionListener onCompletionListener,
+                              final MediaPlayer.OnErrorListener onErrorListener) {
         if (!config.isArgumentValid()) {
             return false;
         }
@@ -197,7 +203,7 @@ public final class RxAudioPlayer {
     }
 
     private void setMediaPlayerListener(final MediaPlayer player,
-            final ObservableEmitter<Boolean> emitter) {
+                                        final ObservableEmitter<Boolean> emitter) {
         player.setOnCompletionListener(mp -> {
             Log.d(TAG, "OnCompletionListener::onCompletion");
 
@@ -218,8 +224,8 @@ public final class RxAudioPlayer {
     }
 
     private void setMediaPlayerListener(final MediaPlayer player,
-            final MediaPlayer.OnCompletionListener onCompletionListener,
-            final MediaPlayer.OnErrorListener onErrorListener) {
+                                        final MediaPlayer.OnCompletionListener onCompletionListener,
+                                        final MediaPlayer.OnErrorListener onErrorListener) {
         player.setOnCompletionListener(mp -> {
             Log.d(TAG, "OnCompletionListener::onCompletion");
 
