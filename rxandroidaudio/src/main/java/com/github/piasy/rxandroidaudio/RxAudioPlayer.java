@@ -128,7 +128,7 @@ public final class RxAudioPlayer {
     }
 
     public void pause() {
-        if (mPlayer != null) {
+        if (mPlayer != null && mPlayer.isPlaying()) {
             mPlayer.pause();
         }
     }
